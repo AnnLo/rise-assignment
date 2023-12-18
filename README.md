@@ -1,47 +1,38 @@
-## About The Assignemnt
+## The Assignment
 
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+This is my solution to the assignment. Using the English part of the MultiNERD Named Entity Recognition (NER) dataset [a link](https://huggingface.co/datasets/Babelscape/multinerd), a BERT model (bert-base-cased [a_link](https://huggingface.co/bert-base-cased)) was fine tuned to create two systems, A and B.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+### System A
+Uses the full tag set as can be seen on  [a link](https://huggingface.co/datasets/Babelscape/multinerd)
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
+### System B
+Here all but entity types belonging to [PER, ORG, LOC, DIS ANIM] were set to zero.
 
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+1. Clone the repo
 
-1. Get a free API Key at ...
-2. Clone the repo
+2. Install requirements
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   pip install -r requirements.txt
    ```
-3. Install NPM packages
+Or
+2. Create a conda enviroment
    ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+  conda env create --name envname --file=environments.yml
    ```
 
 
-## Usage
+## How to run the code
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+The code can either be run from the terminal, or if one prefers by running the notebook "Train and evaluate". From the terminal
 
+ ```sh
+ python main.py
+ ```
+with either deafault arguments or command line arguments as specified in ``main.py``, system A is the default. The notebook should simply be run top to bottom. There is additionally a notenook where I familirized myself with the dataset, called "A bit of analysis of the dataset".
 
 
 
