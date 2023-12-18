@@ -10,7 +10,7 @@ The following results were achieved when evaluating on the test set:
 
 ``{'precision': 0.9242465487069803, 'recall': 0.9267693507506336, 'f1': 0.9255062305295949, 'accuracy': 0.9870412794467257}``
 
-And tag level evaluation plus averages:
+
 ```
         precision    recall  f1-score   support
 
@@ -44,7 +44,7 @@ The following results were achieved when evaluating on the test set:
 
 ``{'precision': 0.9453199825859817, 'recall': 0.9456905187056313, 'f1': 0.945505214343254, 'accuracy': 0.9912196527627692}``
 
-And tag level evaluation plus averages:
+
 ```
               precision    recall  f1-score   support
 
