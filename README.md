@@ -18,9 +18,8 @@ Here all but entity types belonging to [PER, ORG, LOC, DIS ANIM] were set to zer
    ```sh
    pip install -r requirements.txt
    ```
-Or
 
-2. Create a conda enviroment
+2. Or, create a conda enviroment
    ```sh
   conda env create --name envname --file=environments.yml
    ```
