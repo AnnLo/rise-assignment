@@ -1,7 +1,7 @@
 ## The assignment
 
 
-This is my solution to the assignment. Using the English part of the MultiNERD Named Entity Recognition (NER) dataset [https://huggingface.co/datasets/Babelscape/multinerd], a BERT model (bert-base-cased [https://huggingface.co/bert-base-cased)] was fine-tuned to create two systems, A and B. Both systems were fine-tuned for two epochs.
+This is my solution to the assignment. Using the English part of the MultiNERD Named Entity Recognition (NER) dataset [https://huggingface.co/datasets/Babelscape/multinerd], a BERT model (bert-base-cased [https://huggingface.co/bert-base-cased)] was fine-tuned to create two systems, A and B. Both systems were fine-tuned for two epochs. A short report can be found in ``rise_195_words.pdf``.
 
 ### System A
 Uses the full tag set as can be seen on  [https://huggingface.co/datasets/Babelscape/multinerd].
