@@ -12,17 +12,16 @@ Here all but entity types belonging to [PER, ORG, LOC, DIS ANIM] were set to zer
 
 ### Installation
 
-1. Clone the repo
+1. Clone the repo.
 
-2. Install requirements
+2. Install requirements. Or, create a conda enviroment.
+   ``` sh
+   conda env create --name envname --file=environments.yml
+   ```
    ```sh
    pip install -r requirements.txt
    ```
 
-2. Or, create a conda enviroment
-   ```sh
-  conda env create --name envname --file=environments.yml
-   ```
 
 
 ## How to run the code
