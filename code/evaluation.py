@@ -13,21 +13,20 @@ class Eval:
     
     Args: 
         label_list (list): a list of named entity tags (strings format).
-        file_save (Optional[str]): optional file name to save output
     """
     def __init__(self, label_list:list):
         self.lable_list = label_list
         
     def metrics(self, eval_predictions):
         """
-        Function calculating overall classification metrics on an evaluation dataset. Heavliy inspired by tutorial on token classification https://huggingface.co/docs/transformers/v4.18.0/en/tasks/token_classification and https://huggingface.co/spaces/evaluate-metric/seqeval.
+        Function calculating overall classification metrics on an evaluation dataset. Heavliy inspired by corresponding notebook for tutorial on token classification https://huggingface.co/docs/transformers/v4.18.0/en/tasks/token_classification and https://huggingface.co/spaces/evaluate-metric/seqeval.
         
         Args:
-            eval_predictions (Tuple): the model predictions (logits, and labels) on an evaluation dataset.
+            eval_predictions: the model predictions (logits, and labels) on an evaluation dataset.
         """
         logits, labels = eval_predictions
         predictions = np.argmax(logits, axis=-1)
-
+        
         # predictions when not ignore
         # indexes for the label list correspond to predicted labels for non-ignore tokens
         
@@ -49,10 +48,10 @@ class Eval:
 
     def individual_tag_metrics(self, eval_predictions):
         """
-        Function calculating per tag classification metrics and averages.
+        Function calculating per tag metrics and averages.
         
         Args:
-            test_prediction (Tuple): the model predictions (logits, and labels) on an evaluation dataset.
+            eval_predictions: the model predictions (logits, and labels) on an evaluation dataset.
         """
 
         logits, labels, _ = eval_predictions # obs, also returns metrics apparently

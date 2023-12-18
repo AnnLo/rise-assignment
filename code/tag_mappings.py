@@ -3,7 +3,7 @@ class TagMapping:
     Class for named entity tag-to-id mapping, takes the original full tag set as input and either returns that and the id2label mapping or the updated versions for system B.
     
     Args:
-        system (str): determines whether system A or B is considered
+        system (str): determines whether system A or B is to be considered.
     """
     def __init__(self, system:str):
         self.system = system
@@ -83,8 +83,8 @@ class TagMapping:
         Function that created the label to id and id to lable mapping dicts for system A and B.
         
         returns:
-              self.label2id (dict): label to id mapping dict
-              self.id2label (dict): id to label mapping dict    
+              label2id (dict): label to id mapping dict
+              id2label (dict): id to label mapping dict    
         """
         assert self.system in ["A", "B"], "Not a valid choice."
         

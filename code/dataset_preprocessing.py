@@ -3,7 +3,7 @@ from transformers import BertTokenizerFast
 
 class ProcessData:
     """
-    Class for loading, preprocessing and tokenizing the dataset. Aligns named entity labels with tokenized words, which uses word_ids. Therefore, the tokenizer must be a PreTrainedTokenizerFast.
+    Class for loading, preprocessing and tokenizing the dataset. Aligns named entity labels with tokenized words, which uses word_ids. Therefore, the tokenizer must be a PreTrainedTokenizerFast. BertTokenizerFast inherits from PreTrainedTokenizerFast.
     
     Args:
         system (str): determines which system, A or B, to be tuned
@@ -20,7 +20,7 @@ class ProcessData:
         
     def _handle_labels_subword_tokens(self, word_ids, labels):
         """
-        Function that aligns named entities with the tokenized words, since (here) a WordPiece tokenizer splits unknow words into subword units. According to the original BERT-paper https://arxiv.org/pdf/1810.04805.pdf, in this case the representation of the first subtoken is used. To not add more named entities, dummy label for the rest that are not accounted for when calculating the loss. Cross entropy loss in PyTorch ignores index -100  https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html, also tokens with a word_id 'None' will be set to -100 to be automatically and thus ignored. Heavily inspired by https://huggingface.co/docs/transformers/v4.18.0/en/tasks/token_classification.
+        Function that aligns named entities with the tokenized input, since (here) a WordPiece tokenizer add special tokens and splits unknow words into subword units. According to the original BERT-paper https://arxiv.org/pdf/1810.04805.pdf, in the case a word is split, the representation of the first subtoken is used. To not add more named entities, the rest of the subtokens should not be accounted for when calculating the loss. Cross entropy loss in PyTorch ignores index -100  https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html, subtokens other than the first subtokens in a split work as well as token with a word_id 'None' (special token) will be set to -100 to be automatically and thus ignored. Heavily inspired by https://huggingface.co/docs/transformers/v4.18.0/en/tasks/token_classification.
         
         Args:
             word_ids (list): list of word_ids for the tokenized input
@@ -33,7 +33,7 @@ class ProcessData:
         prev_word_id = None
         for word_id in word_ids:
             if word_id == None:
-                # special token
+                # special token, ignore
                 new_labels.append(-100)
             elif prev_word_id != word_id:
                 # not subwords only, label the first token of any given word
@@ -53,18 +53,20 @@ class ProcessData:
         Function that tokenized a batch and then applies alignment.
         
         Args:
-            batch (list): list of list of input tokens
+            batch: a batch of the dataset
         
         returns:
-              tokenized_batch (): a tokenized and aligned input batch
+              tokenized_batch: a tokenized and aligned input batch
         """
         tokenized_batch = self.tokenizer(batch["tokens"], truncation=True, is_split_into_words=True)
         labels = []
         for i, labels_batch in enumerate(batch["ner_tags"]):
+            # get word ids
             word_ids_batch = tokenized_batch.word_ids(i)
+            # update labels
             new_labels_batch = self._handle_labels_subword_tokens(word_ids_batch, labels_batch)
             labels.append(labels_batch)
-
+        # update batch
         tokenized_batch["labels"] = labels
 
         return tokenized_batch
@@ -97,14 +99,17 @@ class ProcessData:
         Function that maps the dataset to the setting required for system B.
         
         Args:
-            example (): example from the dataset
+            example: example from the dataset
             
         returns:
-            example (): example with updated named entity tags
+            example: example with updated named entity tags
         """
         blabels2id, bid2label = self._helper_mapping()
         ner_tags = example["ner_tags"]
+        
+        # map to correct indices
         mapping_dict= {0:0, 1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 13:9, 14:10}
+        
         new_ner_tags = [mapping_dict[elem] for elem in [0 if not tag in list(bid2label.keys()) else tag for tag in ner_tags]]
         example["ner_tags"] = new_ner_tags
         return example
@@ -115,8 +120,9 @@ class ProcessData:
         Function that preprocesses, filters and tokenizes the dataset.
         
         returns:
-              self.tokenized_dataset (batch datasetdict?): tokenized dataset
+              tokenized_dataset: the tokenized dataset
         """
+        # load dataset etc
         self.dataset = load_dataset(self.huggingface_datset)
         assert isinstance(self.dataset, DatasetDict), "Not the right type."
         assert list(self.dataset.keys()) == ["train", "validation", "test"], "All splits should be present."
@@ -125,17 +131,12 @@ class ProcessData:
         all_languages = self.dataset["train"]["lang"]
         all_languages.extend(self.dataset["validation"]["lang"])
         all_languages.extend(self.dataset["test"]["lang"])
+        
         assert "en"  in set(all_languages), "English must be one of the langauges."
         
         # filter out the english part of the dataset
         dataset_en =  self.dataset.filter(lambda example: example["lang"] == "en")
         
-        # maybe add this? See if it makes any difference...
-        #class_labels = list(self.id2label.values())
-        #for ds in self.data_split:
-        #    features = self.dataset[ds].features.copy()
-        #    features["ner_tags"] = Sequence(feature=ClassLabel(names=class_labels))
-        #    self.dataset[ds] = self.dataset[ds].map(features=features)
         
         assert self.system in ["A", "B"], "Not a valid choice."
         
@@ -143,6 +144,7 @@ class ProcessData:
             # tokenize
             self.tokenized_dataset = dataset_en.map(self._tokenize_and_align, batched=True)
         else:
+            # update tags and tokenize
             self.tokenized_dataset = dataset_en.map(self._map_ner_tags_B).map(self._tokenize_and_align, batched=True)
             
         return self.tokenized_dataset

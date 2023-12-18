@@ -20,8 +20,8 @@ def train(model_name, system, output_dir, learning_rate, batch_size, num_train_e
         weight_decay (float): value of weight decay (regularization)
     
     returns:
-        trainer (Trainer): upon completed training, the trainer is returned for evaluation
-        tokenized_dataset (): returned for evaluation
+        trainer : upon completed training, the trainer is returned for evaluation
+        tokenized_dataset : returned for evaluation
     """
     
     # original tagset
@@ -97,7 +97,7 @@ def train(model_name, system, output_dir, learning_rate, batch_size, num_train_e
     # training args
     
     training_args = TrainingArguments(
-      output_dir=output_dir,
+      output_dir="output/"+output_dir,
       learning_rate=learning_rate,
       per_device_train_batch_size=batch_size,
       per_device_eval_batch_size=batch_size,
