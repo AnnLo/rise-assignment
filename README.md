@@ -4,7 +4,11 @@
 This is my solution to the assignment. Using the English part of the MultiNERD Named Entity Recognition (NER) dataset [https://huggingface.co/datasets/Babelscape/multinerd], a BERT model (bert-base-cased [https://huggingface.co/bert-base-cased)] was fine-tuned to create two systems, A and B.
 
 ### System A
-Uses the full tag set as can be seen on  [https://huggingface.co/datasets/Babelscape/multinerd]. Evaluating on the test set after fine-tuning for two epochs gave
+Uses the full tag set as can be seen on  [https://huggingface.co/datasets/Babelscape/multinerd].
+
+The following results were achieved when evaluating on the test set:
+
+``{'precision': 0.9234206232030461, 'recall': 0.9267693507506336, 'f1': 0.9250919564836618, 'accuracy': 0.9869980548951804}``
 
 
 ### System B
@@ -12,12 +16,7 @@ Here all but entity types belonging to [PER, ORG, LOC, DIS ANIM] were set to zer
 
 The following results were achieved when evaluating on the test set:
 
-| System | Accuracy | Precision | Recall | F1 |
------------------------------------------------
-| A | | | | |
------------------------------------------------
-| B | | | | |
------------------------------------------------
+``{'precision': 0.9488388335952506, 'recall': 0.9466486651278254, 'f1': 0.9477424840306089, 'accuracy': 0.9914645918881925}``
 
 ### Installation
 
