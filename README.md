@@ -10,7 +10,7 @@ The following results were achieved when evaluating on the test set:
 
 ``{'precision': 0.9242465487069803, 'recall': 0.9267693507506336, 'f1': 0.9255062305295949, 'accuracy': 0.9870412794467257}``
 
-And tag level evaluation:
+And tag level evaluation plus averages:
 ```
         precision    recall  f1-score   support
 
@@ -42,7 +42,23 @@ Here all but entity types belonging to [PER, ORG, LOC, DIS ANIM] were set to zer
 
 The following results were achieved when evaluating on the test set:
 
-``{'precision': 0.9488388335952506, 'recall': 0.9466486651278254, 'f1': 0.9477424840306089, 'accuracy': 0.9914645918881925}``
+``{'precision': 0.9453199825859817, 'recall': 0.9456905187056313, 'f1': 0.945505214343254, 'accuracy': 0.9912196527627692}``
+
+And tag level evaluation plus averages:
+```
+              precision    recall  f1-score   support
+
+        ANIM       0.68      0.68      0.68      3228
+         DIS       0.68      0.66      0.67      1564
+         LOC       0.98      0.98      0.98     23956
+         ORG       0.97      0.97      0.97      6638
+         PER       0.98      0.98      0.98     10554
+
+   micro avg       0.95      0.95      0.95     45940
+   macro avg       0.86      0.85      0.85     45940
+weighted avg       0.95      0.95      0.95     45940
+
+```
 
 ### Installation
 
